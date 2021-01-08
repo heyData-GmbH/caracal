@@ -114,6 +114,20 @@ module Caracal
           model
         end
 
+        # .page_num
+        def field(*args, &block)
+          options = Caracal::Utilities.extract_options!(args)
+          options = options.merge({ type: args[0] })
+
+          model = Caracal::Core::Models::FieldModel.new(options, &block)
+          if model.valid?
+            runs << model
+          else
+            raise Caracal::Errors::InvalidModelError, ':page_num method must receive a string for the display text.'
+          end
+          model
+        end
+
         # .page
         def page
           model = Caracal::Core::Models::PageBreakModel.new({ wrap: false })
