@@ -1,6 +1,7 @@
 require 'caracal/core/models/base_model'
 require 'caracal/core/models/link_model'
 require 'caracal/core/models/text_model'
+require 'caracal/core/models/field_model'
 require 'caracal/errors'
 
 
