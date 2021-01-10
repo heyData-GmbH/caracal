@@ -210,18 +210,32 @@ module Caracal
         end
       end
 
+      def render_field(xml, model)
+        xml['w'].fldChar({ 'w:fldCharType' => 'begin' })
+        xml['w'].r do
+          xml['w'].rPr do
+            render_run_attributes(xml, model, false)
+          end
+          xml['w'].instrText({ 'xml:space' => 'preserve' }) do
+            xml.text model.formatted_type
+          end
+        end
+        xml['w'].fldChar({ 'w:fldCharType' => 'separate' })
+        xml['w'].fldChar({ 'w:fldCharType' => 'end' })
+      end
+
       def render_list(xml, model)
         if model.list_level == 0
           document.toplevel_lists << model
           list_num = document.toplevel_lists.length   # numbering uses 1-based index
         end
 
-        model.recursive_items.each do |item|
-          render_listitem(xml, item, list_num)
+        model.recursive_items.each_with_index do |item, item_index|
+          render_listitem(xml, item, list_num, item_index == model.recursive_items.length + 1)
         end
       end
 
-      def render_listitem(xml, model, list_num)
+      def render_listitem(xml, model, last_item)
         ls      = document.find_list_style(model.list_item_type, model.list_item_level)
         hanging = ls.style_left.to_i - ls.style_indent.to_i - 1
 
@@ -232,7 +246,7 @@ module Caracal
               xml['w'].numId({ 'w:val' => list_num })
             end
             xml['w'].ind({ 'w:left' => ls.style_left, 'w:hanging' => hanging })
-            xml['w'].contextualSpacing({ 'w:val' => '1' })
+            xml['w'].contextualSpacing({ 'w:val' => last_item ? '0' : '1' })
             xml['w'].rPr do
               xml['w'].u({ 'w:val' => 'none' })
             end
