@@ -235,7 +235,7 @@ module Caracal
         end
       end
 
-      def render_listitem(xml, model, last_item)
+      def render_listitem(xml, model, list_num, last_item)
         ls      = document.find_list_style(model.list_item_type, model.list_item_level)
         hanging = ls.style_left.to_i - ls.style_indent.to_i - 1
 
