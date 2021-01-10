@@ -231,7 +231,7 @@ module Caracal
         end
 
         model.recursive_items.each_with_index do |item, item_index|
-          render_listitem(xml, item, list_num, item_index == model.recursive_items.length + 1)
+          render_listitem(xml, item, list_num, (item_index + 1) == model.recursive_items.length)
         end
       end
 
@@ -246,7 +246,7 @@ module Caracal
               xml['w'].numId({ 'w:val' => list_num })
             end
             xml['w'].ind({ 'w:left' => ls.style_left, 'w:hanging' => hanging })
-            xml['w'].contextualSpacing({ 'w:val' => last_item ? '1' : '0' })
+            xml['w'].contextualSpacing({ 'w:val' => last_item ? '0' : '1' })
             xml['w'].rPr do
               xml['w'].u({ 'w:val' => 'none' })
             end
