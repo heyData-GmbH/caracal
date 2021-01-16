@@ -211,7 +211,9 @@ module Caracal
       end
 
       def render_field(xml, model)
-        xml['w'].fldChar({ 'w:fldCharType' => 'begin' })
+        xml['w'].r do
+          xml['w'].fldChar({ 'w:fldCharType' => 'begin' })
+        end
         xml['w'].r do
           xml['w'].rPr do
             render_run_attributes(xml, model, false)
@@ -220,8 +222,12 @@ module Caracal
             xml.text model.formatted_type
           end
         end
-        xml['w'].fldChar({ 'w:fldCharType' => 'separate' })
-        xml['w'].fldChar({ 'w:fldCharType' => 'end' })
+        xml['w'].r do
+          xml['w'].fldChar({ 'w:fldCharType' => 'separate' })
+        end
+        xml['w'].r do
+          xml['w'].fldChar({ 'w:fldCharType' => 'end' })
+        end
       end
 
       def render_list(xml, model)
